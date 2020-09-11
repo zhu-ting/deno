@@ -30,7 +30,27 @@ export default {
             data: [...todos, newTodo],
         }
     },
-    getTodoById: () => {},
+    getTodoById: (
+        { params, response } : { params: { id: string }; response: any }
+    ) => {
+        const todo = todos.find(todo => {
+            return todo.id === params.id;
+        });
+        if(!todo) {
+            response.status = 404;
+            response.body = {
+                success: false,
+                message: "No todo found",
+            };
+            return;
+        }
+
+        response.status = 200;
+        response.body = {
+            success: true,
+            data: todo,
+        };
+    },
     updateTodoById: () => {},
     deleteTodoById: () => {},
 }
