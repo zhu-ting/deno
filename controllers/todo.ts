@@ -79,5 +79,14 @@ export default {
             data: newTodos,
         };
     },
-    deleteTodoById: () => {},
+    deleteTodoById: (
+        { params, response }: { params: {id: string}; response: any },
+    ) => {
+        const allTodos = todos.filter(todo => todo.id !== params.id );
+        response.status = 200;
+        response.body = {
+            success: true,
+            data: allTodos,
+        };
+    },
 }
