@@ -51,6 +51,33 @@ export default {
             data: todo,
         };
     },
-    updateTodoById: () => {},
+    updateTodoById: async (
+        { params, request, response }: {
+            params: { id: string },
+            request: any,
+            response: any,
+        },
+    ) => {
+        const todo = todos.find(todo => todo.id === params.id );
+        if (!todo) {
+            response.status = 404;
+            response.body = {
+                success: false,
+                message: "No todo found",
+            };
+            return;
+        }
+
+        const body = await request.body();
+        const updatedData: { todo?: string; isCompleted?: boolean } = body.value;
+        let newTodos = todos.map(todo => {
+            return todo.id === params.id ? {...todo, ...updatedData } : todo;
+        });
+        response.status = 200;
+        response.body = {
+            success: true,
+            data: newTodos,
+        };
+    },
     deleteTodoById: () => {},
 }
